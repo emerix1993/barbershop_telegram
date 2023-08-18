@@ -21,7 +21,6 @@ procedures = ['Стрижка', 'Гоління', 'Комплекс', 'Напи�
 
 @bot.message_handler(commands=['start'])
 def phone(message):
-    global chat_id
     chat_id = message.chat.id
     keyboard = types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True)
     button_phone = types.KeyboardButton(text="Відправити номер телефону", request_contact=True)
@@ -31,7 +30,7 @@ def phone(message):
 
 @bot.message_handler(content_types=['contact'])
 def contact(message):
-    if message.contact is not None:
+    if message.contact is not None: #TODO -> add else
         print(message.contact)
         inline_markup = telebot.types.InlineKeyboardMarkup(row_width=1)
         for procedure in procedures:
