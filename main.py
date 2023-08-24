@@ -1,6 +1,9 @@
 import telebot
 import logging
 
+from telebot.apihelper import session
+
+from models import User
 from telebot import types
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardMarkup, KeyboardButton, \
     ReplyKeyboardRemove
@@ -43,6 +46,9 @@ def contact(message):
 def process_procedure(callback_query, process_date_time=str):
     procedure = callback_query.data
     bot.send_message(callback_query.from_user.id, f"Ви обрали процедуру: {procedure}")
+    new_user = User(chat_id=callback_query.message.chat.id, procedure=procedure, first_name=callback_query.from_user.first_name, last_name=callback_query.from_user.last_name, phone=callback_query.from_user.contact.phone_number)
+    session.add(new_user)
+    session.commit()
     bot.send_message(callback_query.from_user.id,
                      "Введіть дату та час візиту у форматі ДД-ММ та час(приклад -> 19.05 15:00)")
     bot.register_next_step_handler(callback_query.message, process_date_time)
