@@ -9,6 +9,8 @@ Base = declarative_base()
 
 engine = create_engine('mysql://admin:admin@localhost/barbershop_telegram')
 
+Session = sessionmaker(bind=engine)
+session = Session()
 
 class User(Base):
     __tablename__ = 'users'
@@ -24,8 +26,6 @@ class User(Base):
 
     Base.metadata.create_all(engine)
 
-    Session = sessionmaker(bind=engine)
-    session = Session()
 
     def __repr__(self):
         return f'User(id={self.chat_id}, first_name={self.first_name}, last_name={self.last_name}, phone={self.phone}, procedure={self.procedure}, date={self.date}, time={self.time})'
